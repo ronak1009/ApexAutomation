@@ -1,6 +1,18 @@
 import { Text, View, Button, TextInput } from "react-native";
+import {useState} from 'react';
+import {router } from 'expo-router';
 
 export default function Index() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const login =  ()  =>{
+    console.log("### login: ", username);
+    
+    // TODO: Implement login logic here
+    router.replace('/customerSelection');
+  };
+
   return (
     <View
       style={{
@@ -21,7 +33,9 @@ export default function Index() {
       }}>Apex Automation</Text>
       {
         <>
-        <TextInput style={{
+        <TextInput
+        onChangeText={setUsername}
+        style={{
         width: 200,
         borderColor: 'grey',
         borderWidth: 1,
@@ -36,7 +50,9 @@ export default function Index() {
       }
       {
         <>
-        <TextInput style={{
+        <TextInput 
+        onChangeText={setPassword}
+        style={{
         width: 200,
         borderColor: 'grey',
         borderWidth: 1,
@@ -52,7 +68,8 @@ export default function Index() {
       
 
       {<Button
-      title="Login" onPress={() => navigation.navigate('Login')} /> }
+      title="Login" onPress={login} /> }
     </View>
+
   );
 }
