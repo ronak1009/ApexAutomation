@@ -3,7 +3,9 @@ import { Dropdown } from 'react-native-element-dropdown';
 import { useState, useEffect } from 'react';
 import { router, Redirect } from 'expo-router';
 
-import { label, textinput, view_center } from '../constants/styles';
+import { label, textinput, view_top } from '../constants/styles';
+
+import ApexButton from '../components/ApexButton'
 
 const data = {
 	"Gujarat": {
@@ -48,6 +50,7 @@ export default function customerSelection() {
 	const stateSelectionChanged = (statevalue) => {
 		console.log('### updateCities:', statevalue);
 		setSelectedState(statevalue.label);
+		
 		let c = []
 		const cs = Object.keys(data[statevalue.label]);
 		for (let i = 0; i < cs.length; i++) {
@@ -55,11 +58,24 @@ export default function customerSelection() {
 		};
 		console.log('### updateCities:', c);
 		setCities(c);
-		setSelectedCity("");
-		setSelectedCustomer("");
-		setSelectedProject("");
-		setCustomers([]);
-		setProjects([]);
+		if (global.selectedCustomer && global.selectedCustomer.state === statevalue.label)
+		{
+			setSelectedCity(global.selectedCustomer.city);
+			setSelectedCustomer(global.selectedCustomer.customer);
+			setSelectedProject(global.selectedCustomer.project);
+
+			citySelectionChanged({label:global.selectedCustomer.city});
+			customerSelectionChanged({label:global.selectedCustomer.customer});
+			projectSelectionChanged({label:global.selectedCustomer.project});
+
+		} else 
+		{
+			setSelectedCity("");
+			setSelectedCustomer("");
+			setSelectedProject("");
+			setCustomers([]);
+			setProjects([]);
+		}
 	};
 
 	const citySelectionChanged = (cityvalue) => {
@@ -71,6 +87,7 @@ export default function customerSelection() {
 			cs.push({ label: cst[i], value: i })
 		};
 		console.log('### updateCustomers:', cs);
+		
 		setSelectedCustomer("");
 		setSelectedProject("");
 		setProjects([]);
@@ -98,15 +115,27 @@ export default function customerSelection() {
 	const saveCustomerSelection = () => {
 		global.selectedCustomer = {
 			state: selectedState,
-      city: selectedCity,
-      customer: selectedCustomer,
-      project: selectedProject,
+			city: selectedCity,
+			customer: selectedCustomer,
+			project: selectedProject,
 		}
 
 		// <Redirect href = { '/dashboard'} />
 		router.replace('/details/dashboard');
 
 	}
+
+	// if globally set
+	useEffect (() => {
+		if (global.selectedCustomer)
+		{
+			setSelectedState(global.selectedCustomer.state);
+            setSelectedCity(global.selectedCustomer.city);
+            setSelectedCustomer(global.selectedCustomer.customer);
+            setSelectedProject(global.selectedCustomer.project);
+		}
+
+	}, [global.selectedCustomer])
 
 	// Update the state of save button
 	useEffect(() => {
@@ -119,7 +148,7 @@ export default function customerSelection() {
 	}, [selectedCity, selectedState, selectedCustomer, selectedProject])
 
 	return (
-		<View style={view_center}>
+		<View style={view_top}>
 			<Text style={label}>Select State</Text>
 			<Dropdown
 				data={getStates()}
@@ -173,7 +202,8 @@ export default function customerSelection() {
 				onChange={projectSelectionChanged}
 			></Dropdown>
 
-			<Button disabled={saveButtonState} title="Submit" onPress={saveCustomerSelection} />
+
+			<ApexButton disabled={saveButtonState} title="Submit" onPress={saveCustomerSelection} />
 
 		</View>
 	)

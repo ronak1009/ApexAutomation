@@ -1,7 +1,8 @@
-import { Text, View, Button, TextInput, StyleSheet } from "react-native";
+import { Text, View, Pressable, TextInput, StyleSheet } from "react-native";
 import { useState } from 'react';
 import { router } from 'expo-router';
-
+import 'react-native-gesture-handler';
+import ApexButton from '../components/ApexButton';
 
 const Separator = () => <View style={{
 	marginVertical: 8,
@@ -21,6 +22,9 @@ export default function Index() {
 
 	const login = () => {
 		console.log("### login: ", username);
+
+	    // clear globals
+    
 
 		// TODO: Implement login logic here
 		router.replace('/customerSelection');
@@ -90,10 +94,11 @@ export default function Index() {
 			<View style={{
 				flexDirection: 'row',
 				justifyContent: 'space-around',
+				alignContent: 'center',
 			}}>
-				<Button title="Login" onPress={login} />
+				<ApexButton title="Login" onPress={login} />
 				<HSeparator />
-				<Button title="Forgot" onPress={login} />
+				<Pressable onPress={login}><Text style={{marginTop:15}}>Forgot?</Text></Pressable>
 			</View>
 
 		</View>

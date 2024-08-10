@@ -5,6 +5,14 @@ const defaultStyles = {
         alignItems: "center",
         backgroundColor: "white",
     },
+    view_top: {
+        flex: 1,
+        backgroundColor: "white",
+        paddingTop: 20,
+        paddingBottom: 20,
+        marginLeft: 10,
+        paddingLeft: 20
+    },
     h2: {
         fontSize: 24,
         fontWeight: "bold",

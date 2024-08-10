@@ -1,7 +1,8 @@
-import { View, Text } from 'react-native'
 import React from 'react'
-import {Redirect} from 'expo-router';
+import { Redirect } from 'expo-router'
 
-export default function changecustomer() {
-	return <Redirect href={"../customerSelection"} />
+const changecustomer = () => {
+  return <Redirect href="/customerSelection" />
 }
+
+export default changecustomer
